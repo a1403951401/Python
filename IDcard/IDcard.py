@@ -12,7 +12,7 @@ class main:
         self.youxiao = "是"
 
     def main(self):
-        if "身份证" in self.data:
+        if self.IDcard:
             dir = {"身份证位数":len(self.IDcard)}
             if len(self.IDcard) != 18:
                 self.youxiao = "否"
@@ -21,29 +21,17 @@ class main:
             dir = dict(dir, **self.xb())
             dir = dict(dir, **self.zuihou())
             dir["证件是否正确"] = self.youxiao
-            return dict(self.data, **dir)
+            return dir
         else:
-            if "区" in self.data:
-                qu = self.data["区"]
-            else:
-                with open(f"{self.ScriptDirname}/区.txt", encoding="utf-8") as f:
-                    qu = f.readlines()
-                qu = qu[random.randint(0, len(qu))].split("|")[0]
-            if "时间" in self.data:
-                t = self.data["时间"]
-            else:
-                t = random.randint(0, int(time.time()))
-                t = time.strftime("%Y%m%d", time.localtime(t))
-            if "派出所" in self.data:
-                num = self.data["派出所"]
-            else:
-                num = random.randint(0, 99)
-                if num < 10 :
-                    num = f"0{str(num)}"
-            if "性别" in self.data:
-                sex = self.data["性别"]
-            else:
-                sex = random.randint(0, 9)
+            with open(f"{self.ScriptDirname}/区.txt", encoding="utf-8") as f:
+                qu = f.readlines()
+            qu = qu[random.randint(0, len(qu))].split("|")[0]
+            t = random.randint(0, int(time.time()))
+            t = time.strftime("%Y%m%d", time.localtime(t))
+            num = random.randint(0, 99)
+            if num < 10 :
+                num = f"0{str(num)}"
+            sex = random.randint(0, 9)
             key = f"{qu}{t}{num}{sex}"
             return {"生成身份证": key + self.zuihou(key)["最后一位"]}
 
