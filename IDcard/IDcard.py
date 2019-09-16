@@ -1,11 +1,9 @@
-import os, json
+import os
 import time, datetime
-
 import random
 
 # 定义自身类【Page类、Tool类】
-class main:
-    # 传入参数、订单号
+class IDcard:
     def __init__(self, IDcard = None, *args, **kwargs):
         self.ScriptDirname = os.path.dirname(os.path.abspath(__file__))  # 当前工作目录
         self.IDcard = IDcard
@@ -34,7 +32,6 @@ class main:
             sex = random.randint(0, 9)
             key = f"{qu}{t}{num}{sex}"
             return {"生成身份证": key + self.zuihou(key)["最后一位"]}
-
 
     # 省市区
     def sqssq(self):
@@ -79,7 +76,6 @@ class main:
             self.youxiao = "否"
             return dir
 
-
     # 性别
     def xb(self):
         if len(self.IDcard) >= 16:
@@ -122,4 +118,4 @@ if __name__ == '__main__':
         "440781199804181337"
     ]
     for i in s:
-        print(dumps(main(i).main(), ensure_ascii=False))
+        print(dumps(IDcard(i).main(), ensure_ascii=False))
