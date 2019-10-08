@@ -55,25 +55,3 @@ class Nacos:
             }
         )
         return bool(check(html))
-
-if __name__ == '__main__':
-    import time
-    n = Nacos("47.102.96.180", 8848)
-    print(n.Put("martin", "test", "12412411"))
-    time.sleep(0.01)
-    print(n.Get("martin", "test"))
-    print(n.Listener("martin", "test", "0e48785431b27d6aab7bee0c22fe6d12", timeout = 20))
-    print(n.Delete("martin", "test"))
-
-    # 配置中心的参数
-    class Config_Server:
-        namespace = ""
-        ip = "47.102.96.180"
-        port = 8848
-        data_id = "test"
-        group = "test"
-    class Localhost:
-        name = 'config_test_server_huaweiyun'
-        cluster_name = "jiqunname"
-        ip = "139.9.176.131"
-        port = 80

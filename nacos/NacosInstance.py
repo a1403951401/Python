@@ -117,18 +117,5 @@ class NacosInstance:
                 "groupName": groupName,
                 "ephemeral": ephemeral,
             })
-        time.sleep(hold / 1000)
+        sleep(hold / 1000)
         return check(html)
-
-
-
-
-if __name__ == '__main__':
-    import time
-    n = NacosInstance("47.102.96.180", 8848)
-    print(n.Add("444"))
-    print(n.Put("444"))
-    print(n.List("444"))
-    print(n.Beat("444", hold=5000))
-    print(n.Get("444"))
-    print(n.Delete("444"))
