@@ -1,5 +1,9 @@
 from nacos.func import *
 
+"""
+    配置实例的类
+"""
+
 class NacosInstance:
     def __init__(self, ip, port):
         self.ip = ip
@@ -74,8 +78,7 @@ class NacosInstance:
                 "healthyOnly": healthyOnly,
                 "groupName": groupName,
             })
-        check(html)
-        return html.json()
+        return check(html)
 
     # 查询实例状态
     def Get(self, serviceName,
@@ -92,8 +95,7 @@ class NacosInstance:
                 "groupName": groupName,
                 "ephemeral" : ephemeral,
             })
-        check(html)
-        return html.json()
+        return check(html)
 
     # 发送心跳包
     def Beat(self, serviceName,
@@ -119,3 +121,12 @@ class NacosInstance:
             })
         sleep(hold / 1000)
         return check(html)
+
+if __name__ == '__main__':
+    n = NacosInstance("47.102.96.180", 8848)
+    print(n.Add("444"))
+    print(n.Get("444"))
+    print(n.Put("444"))
+    print(n.Get("444"))
+    print(n.List("444"))
+    print(n.Delete("444"))
