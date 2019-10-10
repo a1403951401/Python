@@ -11,15 +11,17 @@ u2 = u'\x02'
 
 
 # 检查网页状态的方法
-def check(html):
+def check(html, json = True):
     code = html.status_code
     if code == 200:
         if html.text == "ok":
             return True
-        try:
-            return html.json()
-        except:
-            return html.text
+        if json:
+            try:
+                return html.json()
+            except:
+                pass
+        return html.text
     else:
         print(html.text)
         raise Request_Err(code)

@@ -21,7 +21,7 @@ class HoldConfig:
                     tenant=tenant
                 )
                 if req:
-                    newConfig = self.NacosConfig.Get(data_id, group)
+                    newConfig = self.NacosConfig.Get(data_id, group, to_json = False)
                     contentMD5 = getMD5(
                         newConfig
                     )

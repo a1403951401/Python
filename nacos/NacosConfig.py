@@ -11,7 +11,7 @@ class NacosConfig:
 
     # 获取配置
     def Get(self, data_id : str, group : str,
-            tenant : str = ""):
+            tenant : str = "", to_json = True):
         html = requests.get(
             url = getUrl(self.ip, self.port, "/nacos/v1/cs/configs"),
             params = {
@@ -19,7 +19,7 @@ class NacosConfig:
                 "dataId":data_id,
                 "group":group
             })
-        return check(html)
+        return check(html, to_json)
 
     # 监听配置表，如果改变了则立即返回 True 否则会阻塞直到 timeout 返回 False
     def Listener(self, data_id : str, group : str, contentMD5 : str,
