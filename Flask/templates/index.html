@@ -1,0 +1,30 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+</head>
+<body>
+<form action="{{ url }}" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="提交[文件有效期30天]">
+</form>
+<br/>
+{% if file %}
+<table border="1">
+    <tr>
+        <th>文件名</th>
+        <th>打开</th>
+        <th>下载</th>
+    </tr>
+    {% for i in file %}
+
+        <tr>
+            <td>{{i.filename}}</td>
+            <td><a href="{{ url }}file/{{i.url}}" target="_blank">{{ url }}file/{{i.url}}</a></td>
+            <td><a href="{{ url }}download/{{i.url}}" target="_blank">{{ url }}download/{{i.url}}</a></td>
+        </tr>
+    {% endfor %}
+{% endif %}
+</table>
+</body>
+</html>
