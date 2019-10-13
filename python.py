@@ -1,17 +1,13 @@
-import nacos, time
+from flask import Flask
+app = Flask(__name__)
 
-config = "随机文本"
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
 
-
-
-
-
-def AAA(txt):
-    global config
-    config = txt
-
-n = nacos.CreatNewNacos("47.102.96.180", 8848)
-n.HoldConifg.Start("111", "1", AAA)
-while True:
-    time.sleep(1)
-    print(config)
+if __name__ == '__main__':
+    app.run(
+        host = "0.0.0.0",
+        port = "80",
+        debug = False
+    )
