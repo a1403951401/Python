@@ -94,8 +94,8 @@
 			    var tab=document.getElementById('tab');
 			    var len = obj.length;
                 for(var i=0;i<len;i++){
-                    var download = '<a href="{{ url }}download/' + obj[i].url + '" target="_blank">{{ url }}download/' + obj[i].url + '</a>';
-                    var open = '<a href="{{ url }}file/' + obj[i].url + '" target="_blank">{{ url }}file/' + obj[i].url + '</a>';
+                    var download = '<a href="' + obj[i].download + '" target="_blank">' + obj[i].download + '</a>';
+                    var open = '<a href="' + obj[i].open + '" target="_blank">' + obj[i].open + '</a>';
                     tab.innerHTML+='<tr><td>' + obj[i].filename + '</td><td>' + open + '</td><td>' + download + '</td></tr>'
                 }
 

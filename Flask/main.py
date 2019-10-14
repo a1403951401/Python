@@ -41,7 +41,8 @@ def index():
         v.save(os.path.join(path, f"{k}_{v.filename}"))
         f.append(
             {
-                "url" : f"{now}/{k}_{v.filename}",
+                "open" : f"{request.host_url}file/{now}/{k}_{v.filename}",
+                "download" : f"{request.host_url}download/{now}/{k}_{v.filename}",
                 "filename" : v.filename
             }
         )
@@ -72,7 +73,6 @@ def index():
 @app.route('/download/<time>/<file_name>/', methods=["GET"])
 def download(time, file_name):
     try:
-        print(f"{sys.path[0]}/file/{file_name}")
         response = make_response(
             send_from_directory(f"{sys.path[0]}/file/{time}/", file_name, as_attachment=True))
         return response
