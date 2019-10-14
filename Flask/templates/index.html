@@ -2,29 +2,105 @@
 <head>
     <meta charset="UTF-8">
     <title>文件上传</title>
+    <style type="text/css">
+        .container{
+            width: 480px;
+            height: 20px;
+            background-color: gray;
+        }
+        #progress{
+            height: 20px;
+            background-color: orange;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
-<form action="{{ url }}" method="POST" enctype="multipart/form-data">
-    <input type="file" name="file">
-    <input type="submit" value="提交[文件有效期30天]">
-</form>
+
+<input type="file" name="file" id="file">
+<button onclick="fileSelected()">文件信息</button>
+<button onclick="uploadFile()">提交[文件有效期30天]</button>
+<div class='container'>
+     <span id="progress"></span>
+</div>
+<div id="info">
+    <div id="fileName"></div>
+    <div id="fileSize"></div>
+    <div id="fileType"></div>
+</div>
+
 <br/>
-{% if file %}
-<table border="1">
+
+<table border="1" id="tab">
     <tr>
         <th>文件名</th>
         <th>打开</th>
         <th>下载</th>
     </tr>
-    {% for i in file %}
-
-        <tr>
-            <td>{{i.filename}}</td>
-            <td><a href="{{ url }}file/{{i.url}}" target="_blank">{{ url }}file/{{i.url}}</a></td>
-            <td><a href="{{ url }}download/{{i.url}}" target="_blank">{{ url }}download/{{i.url}}</a></td>
-        </tr>
-    {% endfor %}
-{% endif %}
 </table>
+<script>
+    var xhr;
+        function fileSelected() {
+            var file = document.getElementById('file').files[0];
+            if (file) {
+                var fileSize = 0;
+                if (file.size > 1024 * 1024)
+                    fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+                else
+                    fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+                document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
+                document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+                document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
+            }
+        }
+        function uploadFile() {
+            var fd = new FormData();
+            fd.append("file", document.getElementById('file').files[0]);
+            xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener("progress", uploadProgress, false);
+            xhr.addEventListener("load", uploadComplete, false);
+            xhr.addEventListener("error", uploadFailed, false);
+            xhr.addEventListener("abort", uploadCanceled, false);
+            xhr.onreadystatechange=StatHandler;
+            xhr.open("POST", "{{ url }}");
+            xhr.send(fd);
+
+        }
+        function uploadProgress(evt) {
+            if (evt.lengthComputable) {
+                var percent = Math.round(evt.loaded * 100 / evt.total);
+
+                document.getElementById('progress').innerHTML = percent.toFixed(2) + '%';
+                document.getElementById('progress').style.width = percent.toFixed(2) + '%';
+            }
+            else {
+                document.getElementById('progress').innerHTML = 'unable to compute';
+            }
+        }
+        function uploadComplete(evt) {
+            /* 服务器端返回响应时候触发event事件*/
+            document.getElementById('result').innerHTML = evt.target.responseText;
+        }
+        function uploadFailed(evt) {
+            alert("There was an error attempting to upload the file.");
+        }
+        function uploadCanceled(evt) {
+            alert("The upload has been canceled by the user or the browser dropped the connection.");
+        }
+        function StatHandler() {
+			if (xhr.readyState==4 && xhr.status==200) {
+			    var data = xhr.responseText;
+			    var obj = JSON.parse(data, function(k, v) {return v});
+			    var tab=document.getElementById('tab');
+			    var len = obj.length;
+                for(var i=0;i<len;i++){
+                    var download = '<a href="{{ url }}download/' + obj[i].url + '" target="_blank">{{ url }}download/' + obj[i].url + '</a>';
+                    var open = '<a href="{{ url }}file/' + obj[i].url + '" target="_blank">{{ url }}file/' + obj[i].url + '</a>';
+                    tab.innerHTML+='<tr><td>' + obj[i].filename + '</td><td>' + open + '</td><td>' + download + '</td></tr>'
+                }
+
+			}
+		}
+    </script>
 </body>
 </html>

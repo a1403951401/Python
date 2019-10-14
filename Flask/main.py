@@ -1,9 +1,8 @@
-import sys, os, time
-import json
+from flask import Flask, request, abort, Response, send_from_directory, make_response, render_template # Flask 接口相关
+import sys, os, time                    # 获取接口目录
+import json                             # json相关操作
 import shutil
 from threading import Thread
-from flask import Flask, request, send_from_directory, make_response, render_template
-
 
 app = Flask(
     __name__,
@@ -24,6 +23,8 @@ def log(txt, now = None, file = False):
 
 @app.route('/', methods=['Get', 'POST'])
 def index():
+    if request.method == "GET":
+        return render_template('index.html', url = request.host_url)
     # 获取 raw
     if request.is_json:
         raw = request.get_json()
@@ -41,8 +42,6 @@ def index():
         f.append(
             {
                 "url" : f"{now}/{k}_{v.filename}",
-                "path" : f"{path}/{k}_{v.filename}",
-                "key" : k,
                 "filename" : v.filename
             }
         )
@@ -68,7 +67,7 @@ def index():
         log(json.dumps(dir, ensure_ascii=False), file = True)
     else:
         log(json.dumps(dir, ensure_ascii=False))
-    return render_template("index.html", url = request.host_url, file = f)
+    return json.dumps(f, ensure_ascii=False)
 
 @app.route('/download/<time>/<file_name>/', methods=["GET"])
 def download(time, file_name):
