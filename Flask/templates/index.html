@@ -62,7 +62,7 @@
             xhr.addEventListener("error", uploadFailed, false);
             xhr.addEventListener("abort", uploadCanceled, false);
             xhr.onreadystatechange=StatHandler;
-            xhr.open("POST", "{{ url }}");
+            xhr.open("POST", window.location.href);
             xhr.send(fd);
 
         }
@@ -94,8 +94,8 @@
 			    var tab=document.getElementById('tab');
 			    var len = obj.length;
                 for(var i=0;i<len;i++){
-                    var download = '<a href="' + obj[i].download + '" target="_blank">' + obj[i].download + '</a>';
-                    var open = '<a href="' + obj[i].open + '" target="_blank">' + obj[i].open + '</a>';
+                    var download = '<a href="' + window.location.href + obj[i].download + '" target="_blank">' + window.location.href + obj[i].download + '</a>';
+                    var open = '<a href="' + window.location.href + obj[i].open + '" target="_blank">' + window.location.href + obj[i].open + '</a>';
                     tab.innerHTML+='<tr><td>' + obj[i].filename + '</td><td>' + open + '</td><td>' + download + '</td></tr>'
                 }
 

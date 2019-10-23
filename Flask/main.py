@@ -41,8 +41,8 @@ def index():
         v.save(os.path.join(path, f"{k}_{v.filename}"))
         f.append(
             {
-                "open" : f"{request.host_url}file/{now}/{k}_{v.filename}",
-                "download" : f"{request.host_url}download/{now}/{k}_{v.filename}",
+                "open" : f"file/{now}/{k}_{v.filename}",
+                "download" : f"download/{now}/{k}_{v.filename}",
                 "filename" : v.filename
             }
         )
